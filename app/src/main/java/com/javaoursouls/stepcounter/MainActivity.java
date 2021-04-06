@@ -1,5 +1,6 @@
 package com.javaoursouls.stepcounter;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -13,6 +14,7 @@ import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -42,6 +44,7 @@ public class MainActivity
             if (location != null) {
                 Text_Longitude.setText(getResources().getString(R.string.string_Longitude, location.getLongitude()));
                 Text_Latitude.setText(getResources().getString(R.string.string_Latitude, location.getLatitude()));
+                Log.d(TAG, "location change: registered");
             }
         }
 
@@ -66,6 +69,7 @@ public class MainActivity
         super.onCreate(savedInstanceState);
         Log.d(TAG, "oncreate : -> ");
         setContentView(R.layout.activity_main);
+        checkPermission();
 
         Text_Light = (TextView) findViewById(R.id.Light);
         // TODO : use array
@@ -82,14 +86,6 @@ public class MainActivity
         Sensor_Step = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
         Sensor_Light = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
         Sensor_Accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-
-        Log.d(TAG, "onCreate: starting location manager");
-        LocationManager LM = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        LM.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000L, 1.0f, listener);
 
     }
 
@@ -119,8 +115,37 @@ public class MainActivity
         }
     }
 
+    public void checkPermission() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            // check location permissions
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                    checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
+                Log.d(TAG, "onCreate: starting location manager");
+                LocationManager LM = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+                LM.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000L, 1.0f, listener);
 
+            } else {
+                // ask user for permission
+                // ansonsten muss manuel über Einstellungen die Berechtigung erteilt werden
+                ActivityCompat.requestPermissions(this, new String[]{
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,}, 1);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+
+            // hier oder bei permission check location updates??
+            //LM.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000L, 1.0f, listener);
+
+        } else {
+            checkPermission();
+        }
+    }
 
     // ========================================================
     // lifecycle hooks
