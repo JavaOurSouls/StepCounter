@@ -1,4 +1,3 @@
-
 <resources>
     <string name="app_name">StepCounter</string>
     <string name="error_no_sensor">No sensor</string>
@@ -8,5 +7,5 @@
     <string name="string_Light">Light Sensor: %1$.2f</string>
     <string name="string_Latitude">Latitude: %1$.2f</string>
     <string name="string_Longitude">Longitude: %1$.2f</string>
-    <string name="string_Steps">Steps: %1$.2f</string>
+    <string name="string_Steps">Steps: %1$d</string>
 </resources>

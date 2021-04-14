@@ -9,71 +9,67 @@
 
 
     <LinearLayout
-        android:layout_height="match_parent"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:weightSum="2">
+        android:padding="15dp"
+        android:weightSum="2"
+        tools:layout_editor_absoluteX="-386dp"
+        tools:layout_editor_absoluteY="223dp">
 
         <TextView
             android:id="@+id/ACCX"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/string_ACCX"
-            app:layout_constraintLeft_toLeftOf="parent"
-            >
-        </TextView>
+            app:layout_constraintLeft_toLeftOf="parent"></TextView>
+
         <TextView
             android:id="@+id/ACCY"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/string_ACCY"
-            app:layout_constraintLeft_toLeftOf="parent"
-            >
-        </TextView>
+            app:layout_constraintLeft_toLeftOf="parent"></TextView>
+
         <TextView
             android:id="@+id/ACCZ"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/string_ACCZ"
-            app:layout_constraintLeft_toLeftOf="parent"
-            >
-        </TextView>
+            app:layout_constraintLeft_toLeftOf="parent"></TextView>
+
         <TextView
             android:id="@+id/Light"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/string_Light"
-            app:layout_constraintLeft_toLeftOf="parent"
-            >
-        </TextView>
+            app:layout_constraintLeft_toLeftOf="parent"></TextView>
 
         <TextView
             android:id="@+id/Latitude"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/string_Latitude"
-            app:layout_constraintLeft_toLeftOf="parent"
-            >
-        </TextView>
+            app:layout_constraintLeft_toLeftOf="parent"></TextView>
+
         <TextView
             android:id="@+id/Longitude"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/string_Longitude"
-            app:layout_constraintLeft_toLeftOf="parent"
-            >
-        </TextView>
-        <TextView
-            android:id="@+id/Steps"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="40sp"
-            android:text="@string/string_Steps"
-            app:layout_constraintLeft_toLeftOf="parent"
-            >
-        </TextView>
-
+            app:layout_constraintLeft_toLeftOf="parent"></TextView>
 
 
     </LinearLayout>
+    <TextView
+        android:id="@+id/Steps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/string_Steps"
+        android:textSize="40sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+    </TextView>
 </androidx.constraintlayout.widget.ConstraintLayout>

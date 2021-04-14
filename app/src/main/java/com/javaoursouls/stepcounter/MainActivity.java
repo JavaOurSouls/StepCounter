@@ -36,6 +36,7 @@ public class MainActivity
     private TextView Text_AccelerometerX;
     private TextView Text_AccelerometerY;
     private TextView Text_AccelerometerZ;
+    private int steps = 0;
 
     // TODO : extract
     private final LocationListener listener = new LocationListener() {
@@ -76,14 +77,14 @@ public class MainActivity
         Text_AccelerometerX = (TextView) findViewById(R.id.ACCX);
         Text_AccelerometerY = (TextView) findViewById(R.id.ACCY);
         Text_AccelerometerZ = (TextView) findViewById(R.id.ACCZ);
-        // TODO : fix error
+
         Text_Latitude = (TextView) findViewById(R.id.Latitude);
         Text_Longitude = (TextView) findViewById(R.id.Longitude);
         Text_Steps = (TextView) findViewById(R.id.Steps);
 
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        Sensor_Step = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+        Sensor_Step = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
         Sensor_Light = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
         Sensor_Accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
@@ -102,15 +103,18 @@ public class MainActivity
         // TODO : outsource logic
         switch (SensorType) {
             case Sensor.TYPE_LIGHT:
+                Log.d(TAG, "Lightsensor: changed");
                 Text_Light.setText(getResources().getString(R.string.string_Light, event.values[0]));
                 break;
             case Sensor.TYPE_ACCELEROMETER:
+                Log.d(TAG, "Accelerometer: changed");
                 Text_AccelerometerX.setText(getResources().getString(R.string.string_ACCX, event.values[0]));
                 Text_AccelerometerY.setText(getResources().getString(R.string.string_ACCY, event.values[1]));
                 Text_AccelerometerZ.setText(getResources().getString(R.string.string_ACCZ, event.values[2]));
                 break;
-            case Sensor.TYPE_STEP_COUNTER:
-                Text_Steps.setText(getResources().getString(R.string.string_Steps, event.values[0]));
+            case Sensor.TYPE_STEP_DETECTOR:
+                Log.d(TAG, "Stepcounter: changed");
+                Text_Steps.setText(getResources().getString(R.string.string_Steps, steps++));
             default:
         }
     }
@@ -119,9 +123,10 @@ public class MainActivity
         if (Build.VERSION.SDK_INT >= 23) {
             // check location permissions
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                    checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                    checkSelfPermission(android.Manifest.permission.ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_GRANTED){
 
-                Log.d(TAG, "onCreate: starting location manager");
+                Log.d(TAG, "onCreate check permission: starting location manager");
                 LocationManager LM = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
                 LM.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000L, 1.0f, listener);
 
@@ -130,7 +135,8 @@ public class MainActivity
                 // ansonsten muss manuel über Einstellungen die Berechtigung erteilt werden
                 ActivityCompat.requestPermissions(this, new String[]{
                         Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION,}, 1);
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACTIVITY_RECOGNITION}, 1);
             }
         }
     }
@@ -139,8 +145,10 @@ public class MainActivity
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
 
-            // hier oder bei permission check location updates??
-            //LM.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000L, 1.0f, listener);
+            // hier oder bei permission check location updates?? -_> hier nicht möglich mit folgender syntax
+            // Log.d(TAG, "onPermissionResult: starting location manager");
+            // LocationManager LM = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+            // LM.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000L, 1.0f, listener);
 
         } else {
             checkPermission();
@@ -174,7 +182,7 @@ public class MainActivity
 
     @Override
     protected void onStop() {
-        super.onStop(); // stop sensors on closing App/background(?)
+        super.onStop();
         sensorManager.unregisterListener(this);
         Log.d(TAG, "onStop: sensors stoped.");
     }
