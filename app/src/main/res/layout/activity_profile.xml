@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbarSize="12dp"
+    tools:context=".Profile">
+
+    <Button
+        android:id="@+id/profile_back"
+        android:layout_width="117dp"
+        android:layout_height="56dp"
+        android:background="#2196F3"
+        android:text="ZURÜCK"
+        android:textColor="#FFFFFF"
+        android:textSize="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.771"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/profileImage"
+        android:layout_width="153dp"
+        android:layout_height="158dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.266"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/accountid"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:text="AccountID"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.567"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:text="Name"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.488"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/mail"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:text="E-Mail"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.647"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="cursive"
+        android:text="Profile"
+        android:textColor="#2196F3"
+        android:textSize="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.071" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -17,12 +17,16 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 
 public class MainActivity
         extends AppCompatActivity
-        implements SensorEventListener{
+        implements SensorEventListener, LocationListener, View.OnClickListener{
+
+    private int CHECK_PERMISSION_CODE = 1;
 
     private String TAG = "MyLogMessages";
     private SensorManager sensorManager;
@@ -38,46 +42,23 @@ public class MainActivity
     private TextView Text_AccelerometerZ;
     private int steps = 0;
 
-    // TODO : extract
-    private final LocationListener listener = new LocationListener() {
-        @Override
-        public void onLocationChanged(Location location) {
-            if (location != null) {
-                Text_Longitude.setText(getResources().getString(R.string.string_Longitude, location.getLongitude()));
-                Text_Latitude.setText(getResources().getString(R.string.string_Latitude, location.getLatitude()));
-                Log.d(TAG, "location change: registered");
-            }
-        }
+    private Button back;
 
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
 
-        }
-
-        @Override
-        public void onProviderEnabled(String provider) {
-
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {
-
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "oncreate : -> ");
         setContentView(R.layout.activity_main);
+
         checkPermission();
 
+        // get text views
         Text_Light = (TextView) findViewById(R.id.Light);
-        // TODO : use array
         Text_AccelerometerX = (TextView) findViewById(R.id.ACCX);
         Text_AccelerometerY = (TextView) findViewById(R.id.ACCY);
         Text_AccelerometerZ = (TextView) findViewById(R.id.ACCZ);
-
         Text_Latitude = (TextView) findViewById(R.id.Latitude);
         Text_Longitude = (TextView) findViewById(R.id.Longitude);
         Text_Steps = (TextView) findViewById(R.id.Steps);
@@ -87,6 +68,9 @@ public class MainActivity
         Sensor_Step = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
         Sensor_Light = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
         Sensor_Accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+        back = (Button) findViewById(R.id.main_back);
+        back.setOnClickListener(this);
 
     }
 
@@ -100,21 +84,20 @@ public class MainActivity
     public void onSensorChanged(SensorEvent event) {
         int SensorType = event.sensor.getType();
 
-        // TODO : outsource logic
         switch (SensorType) {
             case Sensor.TYPE_LIGHT:
                 Log.d(TAG, "Lightsensor: changed");
-                Text_Light.setText(getResources().getString(R.string.string_Light, event.values[0]));
+                Text_Light.setText(String.valueOf(event.values[0]));
                 break;
             case Sensor.TYPE_ACCELEROMETER:
                 Log.d(TAG, "Accelerometer: changed");
-                Text_AccelerometerX.setText(getResources().getString(R.string.string_ACCX, event.values[0]));
-                Text_AccelerometerY.setText(getResources().getString(R.string.string_ACCY, event.values[1]));
-                Text_AccelerometerZ.setText(getResources().getString(R.string.string_ACCZ, event.values[2]));
+                Text_AccelerometerX.setText(String.valueOf(event.values[0]));
+                Text_AccelerometerY.setText(String.valueOf(event.values[1]));
+                Text_AccelerometerZ.setText(String.valueOf(event.values[2]));
                 break;
             case Sensor.TYPE_STEP_DETECTOR:
                 Log.d(TAG, "Stepcounter: changed");
-                Text_Steps.setText(getResources().getString(R.string.string_Steps, steps++));
+                Text_Steps.setText(String.valueOf(steps++));
             default:
         }
     }
@@ -128,7 +111,7 @@ public class MainActivity
 
                 Log.d(TAG, "onCreate check permission: starting location manager");
                 LocationManager LM = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-                LM.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000L, 1.0f, listener);
+                LM.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000L, 1.0f, this);
 
             } else {
                 // ask user for permission
@@ -136,14 +119,14 @@ public class MainActivity
                 ActivityCompat.requestPermissions(this, new String[]{
                         Manifest.permission.ACCESS_FINE_LOCATION,
                         Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.ACTIVITY_RECOGNITION}, 1);
+                        Manifest.permission.ACTIVITY_RECOGNITION}, CHECK_PERMISSION_CODE);
             }
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == CHECK_PERMISSION_CODE && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
 
             // hier oder bei permission check location updates?? -_> hier nicht möglich mit folgender syntax
             // Log.d(TAG, "onPermissionResult: starting location manager");
@@ -151,6 +134,7 @@ public class MainActivity
             // LM.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000L, 1.0f, listener);
 
         } else {
+            // ermitteln : der user muss zugriff erlauben.
             checkPermission();
         }
     }
@@ -185,5 +169,23 @@ public class MainActivity
         super.onStop();
         sensorManager.unregisterListener(this);
         Log.d(TAG, "onStop: sensors stoped.");
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        if (location != null) {
+            Log.d(TAG, "location change: registered");
+            Text_Longitude.setText(String.valueOf(location.getLongitude()));
+            Text_Latitude.setText(String.valueOf(location.getLatitude()));
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()){
+            case R.id.main_back:
+                finish();
+                break;
+        }
     }
 }

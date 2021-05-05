@@ -1,11 +1,13 @@
 <resources>
     <string name="app_name">StepCounter</string>
     <string name="error_no_sensor">No sensor</string>
-    <string name="string_ACCX">Accelerometer X Value: %1$.2f</string>
-    <string name="string_ACCY">Accelerometer Y Value: %1$.2f</string>
-    <string name="string_ACCZ">Accelerometer Z Value: %1$.2f</string>
-    <string name="string_Light">Light Sensor: %1$.2f</string>
-    <string name="string_Latitude">Latitude: %1$.2f</string>
-    <string name="string_Longitude">Longitude: %1$.2f</string>
-    <string name="string_Steps">Steps: %1$d</string>
+    <string name="string_ACCX">Accelerometer X Value:</string>
+    <string name="string_ACCY">Accelerometer Y Value:</string>
+    <string name="string_ACCZ">Accelerometer Z Value:</string>
+    <string name="string_Light">Light Sensor: </string>
+    <string name="string_Latitude">Latitude: </string>
+    <string name="string_Longitude">Longitude:</string>
+    <string name="string_Steps">Steps:</string>
+    <string name="string_header_key">KEY</string>
+    <string name="string_header_value">VALUE</string>
 </resources>
